@@ -62,6 +62,7 @@ class Feed extends Component {
               _id
               title
               content
+              imageUrl
               creator {
                 name
               }
@@ -70,32 +71,32 @@ class Feed extends Component {
             totalPosts
           }
         }
-      `
+      `,
     };
-    fetch('http://localhost:8080/graphql', {
-      method: 'POST',
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + this.props.token,
-        'Content-Type': 'application/json'
+        Authorization: "Bearer " + this.props.token,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(graphqlQuery)
+      body: JSON.stringify(graphqlQuery),
     })
-      .then(res => {
+      .then((res) => {
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         if (resData.errors) {
-          throw new Error('Fetching posts failed!');
+          throw new Error("Fetching posts failed!");
         }
         this.setState({
-          posts: resData.data.posts.posts.map(post => {
+          posts: resData.data.posts.posts.map((post) => {
             return {
               ...post,
-              imagePath: post.imageUrl
+              imagePath: post.imageUrl,
             };
           }),
           totalPosts: resData.data.posts.totalPosts,
-          postsLoading: false
+          postsLoading: false,
         });
       })
       .catch(this.catchError);

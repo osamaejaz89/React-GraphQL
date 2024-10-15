@@ -236,22 +236,24 @@ class Feed extends Component {
           createdAt: resData.data[resDataField].createdAt,
           imagePath: resData.data[resDataField].imageUrl
         };
-        this.setState(prevState => {
+        this.setState((prevState) => {
           let updatedPosts = [...prevState.posts];
           if (prevState.editPost) {
             const postIndex = prevState.posts.findIndex(
-              p => p._id === prevState.editPost._id
+              (p) => p._id === prevState.editPost._id
             );
             updatedPosts[postIndex] = post;
           } else {
-            updatedPosts.pop();
+            if (prevState.posts.length >= 2) {
+              updatedPosts.pop();
+            }
             updatedPosts.unshift(post);
           }
           return {
             posts: updatedPosts,
             isEditing: false,
             editPost: null,
-            editLoading: false
+            editLoading: false,
           };
         });
       })
